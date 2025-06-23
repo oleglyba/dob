@@ -1,25 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+// App.jsx
+import React, { useEffect, useState } from 'react';
+import Modal from './Modal';
 
-function App() {
+export default function App() {
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    const handleMessage = (e) => {
+      if (e.data?.type === 'dobnow-click') {
+        setOpen(true);
+      }
+    };
+    window.addEventListener('message', handleMessage);
+    return () => window.removeEventListener('message', handleMessage);
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <div>
+        <iframe
+            src="http://localhost:3000/publish/Index.html#!/"
+            width="100%"
+            height="800"
+            title="DOB NOW"
+        />
+        {open && <Modal onClose={() => setOpen(false)} />}
+      </div>
   );
 }
-
-export default App;
